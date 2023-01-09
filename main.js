@@ -1,80 +1,75 @@
-'use strict'
+// EPISODE 3 - Class in Session
 
-// const username = 'Joe';
-// window.username = username;
-// const username = {
-//     name: 'Joe',
-//     email: 'joe@example.com'
+'use strict';
+
+// // Initialize an Item class
+
+// function Item(name, category) {
+//     this.name = name;
+//     this.category = category;
 // }
 
-// username.name = 'Andrew';
-// username.email = 'andrew@example.com';
-
-// EPISODE 1 - let vs const
-
-// function init() {
-//     if(true) {
-//         // var email = 'joe@example.com';
-//         // let email = 'joe@example.com';
-//         // document.getElementById('output').innerHTML = email;
-//     }
-//     document.getElementById('output').innerHTML = `${username.name} (${username.email})`
+// // Create a method called getDetails() for an Item
+// Item.prototype.getDetails = function() {
+//     return  `${this.name} - ${this.category}`;
 // }
 
-// init();
-
-// var = global scope
-// let = inside a function, property can be changed
-// const = cannot change property, once declared.
-
-
-// EPISODE 2 - Arrow Functions Point the Way
-
-// const init = () => {
-//     document.getElementById('output').innerHTML = `${username.name} (${username.email})`
+// // Initialize a PurchasedItem class, inherits the Item class
+// function PurchasedItem(name, category, price) {
+//     Item.call(this, name, category);
+//     this.price = price;
 // }
 
+// // Sets the inherited methods and properties of the base class
+// PurchasedItem.prototype = Object.create(Item.prototype);
+// PurchasedItem.prototype.constructor = PurchasedItem;
 
-// init();
-
-
-// function nameString() {
-//     return `${username.name} (${username.email})`
+// // Creates a new method just for the extended PurchasedItem class
+// PurchasedItem.prototype.getDetailsWithPrice = function() {
+//     return `${this.name} - ${this.category} - $${this.price}`;
 // }
 
-// const nameString = name => `${name} (${username.email})`
+// var item = new Item('Coffee', 'Food');
+// item.category = 'Drinks';
 
-// document.getElementById('output').innerHTML = nameString('Andrew');
+// var PurchasedItem = new PurchasedItem('Sugar', 'Food', '2.49');
 
-let users = [
-    {
-        name: 'Joe',
-        username: 'joe@example.com'
-    },
-    {
-        name: 'Andrew',
-        username: 'andrew@example.com'
-    }
-];
-
-let names = [];
-
-// users.forEach(function(user){
-//     // do something with that user object
-//     names.push(user.name);
-// });
-
-users.forEach(user => names.push(user.name));
-
-document.getElementById('output').innerHTML = names.join(', ');
-
-document.getElementById('btn').addEventListener('click', function() {
-
-    const getDetails = () => {
-    console.log(this);
-
-        return `The button id is ${this.getAttribute('id')}`;
+class Item {
+    constructor(name, category) {
+        this.name = name;
+        this.category = category;
     }
 
-    document.getElementById('output').innerHTML = getDetails();
-});
+    static maxItems = 10;
+
+    static getHelperText() {
+        return 'Add some items to your grocery list';
+    }
+
+    getDetails(){
+        return `${this.name} - ${this.category}`;
+    }
+}
+
+class PurchasedItem extends Item {
+    constructor(name, category, price) {
+        super(name, category); // calls the constructor of the class that we are extending
+        this.price = price;
+    }
+
+    getDetailsWithPrice() {
+        return `${this.name} - ${this.category} - $${this.price}`;
+    }
+    static getNumberOfItems() {
+    return `3 / ${super.maxItems}`
+}
+}
+
+// let item = new Item('Coffee', 'Food');
+// item.category = 'Drinks';
+
+// let PurchasedItem = new PurchasedItem('Sugar', 'Food', '2.49');
+
+// document.getElementById('output').innerHTML = item.getDetails();
+
+document.getElementById('output').innerHTML = PurchasedItem.getNumberOfItems();
